@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="生成器什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。 使用场景项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出">
+<meta name="description" content="生成器什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。 场景描述项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出">
 <meta name="keywords" content="PHP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP Generator 生成器">
 <meta property="og:url" content="http://yoursite.com/2017/06/26/PHP-Generator/index.html">
 <meta property="og:site_name" content="Kevin&#39;s Note">
-<meta property="og:description" content="生成器什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。 使用场景项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出">
-<meta property="og:updated_time" content="2017-07-04T11:08:36.000Z">
+<meta property="og:description" content="生成器什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。 场景描述项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出">
+<meta property="og:updated_time" content="2017-07-05T06:30:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP Generator 生成器">
-<meta name="twitter:description" content="生成器什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。 使用场景项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出">
+<meta name="twitter:description" content="生成器什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。 场景描述项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出">
 
 
 
@@ -331,9 +331,9 @@
 
       
         <h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。<br>Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。</p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出可用的SQL，所以想到用PHP来处理。（后续还是使用了SQL的方式处理用户，等下一篇讲高效的MySQL是如何处理的。）</p>
+<h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出可用的SQL，所以想到用PHP来处理。（后续还是使用了SQL的方式处理用户，等下一篇讲高效的MySQL是如何处理的。）</p>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>简单的思路是，按条件将所有要修改的用户查出来，然后遍历一个个Update。（我知道这个是有点渣的写法=。=！）通过生成器去执行，减少内存的暂用。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">dealWithOldData</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    $userInfo = $oldUser-&gt;selectOldUser();</div><div class="line">    <span class="comment">// 把处理过的数据id写如文件，用作记录</span></div><div class="line">    $fp = fopen(<span class="string">'app.log'</span>,<span class="string">'a'</span>);</div><div class="line">    <span class="keyword">foreach</span> (<span class="keyword">$this</span>-&gt;setStatus($userInfo) <span class="keyword">as</span> $value)</div><div class="line">    &#123;</div><div class="line">        fwrite($fp,$value.<span class="string">','</span>);</div><div class="line">    &#125;</div><div class="line">    fclose($fp);</div><div class="line">    <span class="keyword">exit</span>(<span class="string">'The End of Execute！'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 处理状态</div><div class="line"> * <span class="doctag">@param</span> array $arg</div><div class="line"> * <span class="doctag">@return</span> Generator</div><div class="line"> */</div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">setStatus</span><span class="params">(array $arg)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">foreach</span> ($arg <span class="keyword">as</span> $item) &#123;</div><div class="line">        <span class="keyword">yield</span> $data-&gt;updateData($item[<span class="string">'id'</span>],[<span class="string">'status'</span>=&gt;<span class="number">3</span>]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 处理方法</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">dealWithOldData</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    $userInfo = $oldUser-&gt;selectOldUser();</div><div class="line">    <span class="comment">// 把处理过的数据id写如文件，用作记录</span></div><div class="line">    $fp = fopen(<span class="string">'app.log'</span>,<span class="string">'a'</span>);</div><div class="line">    <span class="keyword">foreach</span> (<span class="keyword">$this</span>-&gt;setStatus($userInfo) <span class="keyword">as</span> $value)</div><div class="line">    &#123;</div><div class="line">        fwrite($fp,$value.<span class="string">','</span>);</div><div class="line">    &#125;</div><div class="line">    fclose($fp);</div><div class="line">    <span class="keyword">exit</span>(<span class="string">'The End of Execute！'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 处理状态</div><div class="line"> * <span class="doctag">@param</span> array $arg</div><div class="line"> * <span class="doctag">@return</span> Generator</div><div class="line"> */</div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">setStatus</span><span class="params">(array $arg)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">foreach</span> ($arg <span class="keyword">as</span> $item) &#123;</div><div class="line">        <span class="keyword">yield</span> $data-&gt;updateData($item[<span class="string">'id'</span>],[<span class="string">'status'</span>=&gt;<span class="number">3</span>]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>上万条数据很快处理完成，内存几乎没有多少飙升。</p>
 <p>下一篇介绍一下，正确的使用SQL语句的处理方法。</p>
 
@@ -374,6 +374,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/27/mysql-update-table-by-another/" rel="prev" title="以其他表查出的结果作为条件，更新当前表">
+                以其他表查出的结果作为条件，更新当前表 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -442,7 +458,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -455,7 +471,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
@@ -490,7 +506,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成器"><span class="nav-number">1.</span> <span class="nav-text">生成器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">2.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">3.</span> <span class="nav-text">实践</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成器"><span class="nav-number">1.</span> <span class="nav-text">生成器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景描述"><span class="nav-number">2.</span> <span class="nav-text">场景描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">3.</span> <span class="nav-text">实践</span></a></li></ol></div>
             
 
           </div>
