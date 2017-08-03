@@ -263,6 +263,128 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/12/update-picture-auto-compress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevin's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/12/update-picture-auto-compress/" itemprop="url">HTML5 Canvas上传自动压缩图片</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T13:57:07+08:00">
+                2017-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>上次好不容易搞清楚，前端使用base64编码格式上传图片，但随之而来又有了新问题，那就是</p>
+<blockquote>
+<p>图片大小怎么控制？</p>
+</blockquote>
+<ul>
+<li>让用户自己压缩？这不科学</li>
+<li>直接丢给后端处理？貌似也可以</li>
+<li>前端压缩完后直接给后端处理？那最好不过了</li>
+</ul>
+<p>跑去问前端，<code>JavaScript</code>可以直接压缩后上传吗？前端答曰：不行。碰一鼻子灰，那就只能丢给后端PHP去做裁剪了。<br>假设用户拍了一张5M左右的图，然后直接上传，信号不好的时候，速度还是很慢的，不过这不是重点，重点是TM流量贵啊～要是失败一次，再重来，那分分钟10几M流量就没了，用户那得哭，这个可不行，这事还是得前端做。<br>网上Google一下，立马一大堆解决方案，内心瞬间…你懂的～</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>Google搜索了一下结果，先讲思路，申明一个<code>new Image()</code>和<code>canvas</code>对象，然后通过<code>canvas</code>裁剪大小，把结果赋给<code>Image</code>对象。理解思路没错，但是不如直接使用成熟的库。介绍一下在Github上的一个好用的类库：<a href="https://github.com/think2011/localResizeIMG" target="_blank" rel="external">localResizeIMG</a>  。Star数有1500+，已经很好了，文档也详细，虽然不再更新了，但只要好用就好了。<br>代码实现如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//图片显示</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">imgPreview</span>(<span class="params">fileDom</span>) </span>&#123;</div><div class="line">    <span class="comment">//判断是否支持FileReader</span></div><div class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.FileReader) &#123;</div><div class="line">        <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        layer.alert(<span class="string">"您的设备不支持图片预览功能，如需该功能请升级您的设备！"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//获取文件</span></div><div class="line">    <span class="keyword">var</span> file = fileDom.files[<span class="number">0</span>];</div><div class="line">    <span class="keyword">var</span> imageType = <span class="regexp">/^image\//</span>;</div><div class="line">    <span class="comment">//是否是图片</span></div><div class="line">    <span class="keyword">if</span> (!imageType.test(file.type)) &#123;</div><div class="line">        layer.alert(<span class="string">"请选择图片！"</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/* 压缩图片 */</span></div><div class="line">    lrz(file, &#123;</div><div class="line">        <span class="attr">width</span>: <span class="number">1200</span> <span class="comment">//设置压缩参数</span></div><div class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">rst</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> img = <span class="keyword">new</span> Image(),</div><div class="line">            sourceSize = toFixed2(file.size / <span class="number">1024</span>),</div><div class="line">            resultSize = toFixed2(rst.fileLen / <span class="number">1024</span>),</div><div class="line">            scale = <span class="built_in">parseInt</span>(<span class="number">100</span> - (resultSize / sourceSize * <span class="number">100</span>));</div><div class="line"></div><div class="line">        <span class="comment">//读取完成</span></div><div class="line">        reader.onload = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">            <span class="comment">//获取图片dom</span></div><div class="line">            <span class="keyword">var</span> img = <span class="built_in">document</span>.getElementById(<span class="string">"imgPreview"</span>);</div><div class="line">            img.src = rst.base64;</div><div class="line">            $(<span class="string">'#base64'</span>).val(rst.base64);</div><div class="line">        &#125;;</div><div class="line">        reader.readAsDataURL(file);</div><div class="line">    &#125;); </div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">toFixed2</span> (<span class="params">num</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">parseFloat</span>(+num.toFixed(<span class="number">2</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/base64-upload/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -652,7 +774,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -665,7 +787,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
