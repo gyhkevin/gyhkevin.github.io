@@ -263,6 +263,172 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/14/PHP-Session/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevin's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/14/PHP-Session/" itemprop="url">PHP会话控制中的安全问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T12:03:29+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/14/PHP-Session/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/14/PHP-Session/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/14/PHP-Session/" class="leancloud_visitors" data-flag-title="PHP会话控制中的安全问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Session会话"><a href="#Session会话" class="headerlink" title="Session会话"></a>Session会话</h2><p>在聊<code>Session</code>之前，先得了解一下<code>Cookie</code>。<code>Cookie</code>是存储在用户客户端上用户识别身份的登陆令牌。最初有很多网站拿它做长期登陆状态，免去用户重复登陆。后来发现存在客户端的这个身份令牌很不安全，很可能被他人获取之后冒牌登陆。而<code>Session</code>是保存在服务器上的，功能和<code>Cookie</code>相似，服务器上的数据不太容易被别人获得，但也仅仅是相对安全。</p>
+<h4 id="用户登陆界面"><a href="#用户登陆界面" class="headerlink" title="用户登陆界面"></a>用户登陆界面</h4><p>当访问用户登陆页面时，查看浏览器控制台，会发现自动生成了一条<code>cookie</code>：<code>PHPSESSID=odpnhnmsf2s5vq4d5n1rqvb656</code>。它是哪里来的呢？原来是因为<code>session_start()</code>函数调用的时候，其实是通过<code>setCookie()</code>函数向cookie中设置了<br><code>PHPSESSID</code>这个key，对应的value是一个随机的、唯一的32位字符串！<br>通过在控制台中输入：<code>document.cookie</code>，可以返回<code>PHPSESSID</code>以及其所对应的值。<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-155731@2x.png"></p>
+<p>假设这个登陆令牌被他人得到了，他可以直接登陆吗？</p>
+<ul>
+<li>接下来做一个实验：</li>
+</ul>
+<p>在火狐浏览器中登陆成功 <img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-161305@2x.png"><br>还是那个字符串没变，把它复制一下，用另一个浏览器访问登陆页面，调出控制台输入<code>document.cookie</code>，看一下现在的cookie <img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-162007@2x.png"><br>和之前的不一样。但是，如果之前拿到的cookie赋值给当前页面会怎么样呢？<code>document.cookie=&#39;PHPSESSID=43f7139b4af1ba2d93db4db3e74bf000&#39;</code> <img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-163518@2x.jpg"><br>这个时候再刷新一下页面，你会发现已经登陆成功了！<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-165203@2x.png"></p>
+<h2 id="HttpOnly"><a href="#HttpOnly" class="headerlink" title="HttpOnly"></a>HttpOnly</h2><p>在实际场景中，通过<code>XSS</code>攻击，很容易被他人获取到。（下一篇，准备讲一下如何实现XSS攻击）<br>那么有什么措施可以防范的呢？先从开启<code>HttpOnly</code>开始。<code>HttpOnly</code>会话支持的浏览器，将仅用于发送HTTP（或HTTPS）请求时，从而限制了其他非HTTP的API（如JavaScript）访问。<br>开启的方法有两种：<br>第一种，是通过配置<code>php.ini</code>，添加一行<code>session.cookie_httponly=On</code>。同时你可能已经发现<code>session.name = PHPSESSID</code>，原来就是在<code>php.ini</code>中配置的。个人推荐这种，配置一次，一劳永逸。<br>如果你没有配置服务器的权限，那么第二种方法就是在<code>session_start()</code>开启之前，添加一行代码：<code>session_set_cookie_params(0, &quot;/&quot;, &quot;&quot;, false, true);</code>。<br>设置完成后，可以看到，多了一个<code>HttpOnly</code>字样。<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-174249@2x.png"><br>再尝试去获取cookie的时候，已经不行了。<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-171952@2x.png"><br>设置了<code>HttpOnly</code>是不是就很安全了呢？那可不一定！<code>HttpOnly</code>仅仅能够防止JavaScript不能访问，但是并不能防止对网络频道具有访问权限的攻击者直接访问该 Cookie。针对这种情况，应考虑使用安全套接字层 (SSL) 来提供帮助。</p>
+<h2 id="Secure"><a href="#Secure" class="headerlink" title="Secure"></a>Secure</h2><p>设置Secure开启，就是之前设置的函数中的<code>session_set_cookie_params(0, &quot;/&quot;, &quot;&quot;, true, true);</code>，倒数第二个参数设为<code>true</code>。创建的Session会话会以安全的形式向服务器传输，也就是只能在<code>HTTPS</code>连接中被浏览器传递到服务器端进行会话验证，如果是<code>HTTP</code>连接则不会传递该信息，所以不会被盗取到<code>Cookie</code>的具体内容。这个设置也可以在<code>php.ini</code>中配置：<code>session.cookie_secure=On</code>。如果全局配置的话，说明全站只能用<code>https</code>传递数据。<br>这时再去查看<code>PHPSESSID</code>时，会看到多了<code>安全</code>两个字。<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-182452@2x.png"><br><img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-182241@2x.png"></p>
+<p>这样感觉已经很安全了，但是查看PHP官方网站，关于会话安全的问题，还有一个重要配置常常被忽视：<code>session.use_strict_mode=On</code>。它有什么作用呢？这里给个链接，有兴趣的可以去看一下。<br><a href="http://php.net/manual/zh/session.security.ini.php" target="_blank" rel="external">和会话安全相关的配置项</a></p>
+<p>下一篇文章准备写一下常见的XSS、反射型XSS和CSRF的攻击和防范。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/12/update-picture-auto-compress/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -305,12 +471,56 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/12/update-picture-auto-compress/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/12/update-picture-auto-compress/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
           
+          
+             <span id="/2017/07/12/update-picture-auto-compress/" class="leancloud_visitors" data-flag-title="HTML5 Canvas上传自动压缩图片">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
           
 
           
@@ -433,12 +643,56 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/07/base64-upload/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/07/base64-upload/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
           
+          
+             <span id="/2017/07/07/base64-upload/" class="leancloud_visitors" data-flag-title="PHP处理base64图片上传">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
           
 
           
@@ -548,12 +802,56 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/27/mysql-update-table-by-another/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/06/27/mysql-update-table-by-another/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
           
+          
+             <span id="/2017/06/27/mysql-update-table-by-another/" class="leancloud_visitors" data-flag-title="MySql中以其他表作为更新表条件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
           
 
           
@@ -669,12 +967,56 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/26/PHP-Generator/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/06/26/PHP-Generator/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
           
+          
+             <span id="/2017/06/26/PHP-Generator/" class="leancloud_visitors" data-flag-title="PHP Generator 生成器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
           
 
           
@@ -780,12 +1122,21 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
 
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
           
 
           
@@ -793,7 +1144,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -804,6 +1155,26 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gyhkevin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/haiven" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
           
         </div>
 
@@ -889,6 +1260,8 @@
   
 
 
+  
+
 
 
 
@@ -916,6 +1289,9 @@
 
   
   <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
 
 
   
@@ -955,6 +1331,14 @@
 
   
 
+    
+      <script id="dsq-count-scr" src="https://http-gyhkevin-github-io.disqus.com/count.js" async></script>
+    
+
+    
+
+  
+
 
 
 
@@ -976,10 +1360,6 @@
 
 
 
-  
-
-
-
 
 
 
@@ -990,6 +1370,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HrBxQ7qWvlX6pYwLplpyj2qg-gzGzoHsz", "XKMsqy3VLOVTID2TLdbVTKbI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 
