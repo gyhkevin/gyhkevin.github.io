@@ -263,6 +263,175 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/15/virtualenv-for-pygame-by-py2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevin's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/15/virtualenv-for-pygame-by-py2/" itemprop="url">Virtualenv+Python2.7搭建智能出租车驾驶环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T05:41:36+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/15/virtualenv-for-pygame-by-py2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/15/virtualenv-for-pygame-by-py2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/03/15/virtualenv-for-pygame-by-py2/" class="leancloud_visitors" data-flag-title="Virtualenv+Python2.7搭建智能出租车驾驶环境">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Mac下使用conda安装pygame"><a href="#Mac下使用conda安装pygame" class="headerlink" title="Mac下使用conda安装pygame"></a>Mac下使用conda安装pygame</h2><p>起初按照项目介绍的安装方式，使用<a href="http://continuum.io/downloads" target="_blank" rel="external">Anaconda</a>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda install -c https://conda.anaconda.org/quasiben pygame</div></pre></td></tr></table></figure></p>
+<p>看安装过程也没报错，一切看似挺顺利的。运行一下项目：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python smartcab/agent.py</div></pre></td></tr></table></figure></p>
+<p>看到的结果是这样的：<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-060838@2x.jpg"><br>只有文字输出，没有任何可视化！<br>我的Mac下同时安装了<code>Python2.7</code>(系统自带)和<code>Python3.6</code>，执行命令的时候，也不知道是安装到了2.7下还是3.6下，这个时候我想到了<a href="https://virtualenv.pypa.io/en/stable/userguide/" target="_blank" rel="external">virtualenv</a>。</p>
+<h2 id="先安装virtualenv"><a href="#先安装virtualenv" class="headerlink" title="先安装virtualenv"></a>先安装virtualenv</h2><p>为了确保使用的是<code>Python2.7</code>，执行如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip2.7 install virtualenv</div></pre></td></tr></table></figure></p>
+<img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-062919@2x.jpg">
+<p>有一个IOError，原因是权限不够，那就给这个包的目录一个权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod +a <span class="string">'user:YOUR-USER-NAME allow add_subdirectory,add_file,delete_child,directory_inherit'</span> /Library/Python/2.7/site-packages</div></pre></td></tr></table></figure></p>
+<img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-063314@2x.jpg">
+<p>这个时候安装成功了。接下来创建一个<code>virtualenv</code>的Python2.7环境：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">virtualenv -p /usr/bin/python2.7 env2.7</div></pre></td></tr></table></figure></p>
+<p>指定对应的Python版本，这个是系统自带的版本。成功后，当前目录会多出一个env2.7的文件夹，然后激活这个环境：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> env2.7/bin/activate</div></pre></td></tr></table></figure></p>
+<p>成功后，终端前面会多出一个<code>(env2.7)</code>。确认一下环境，执行<code>python</code>命令：<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-065338@2x.jpg"><br>顺便提一下，如果你想退出这个环境，最简单的方法是直接关掉当前的终端，当然还有个命令<code>deactivate</code>可以退出。</p>
+<h2 id="env2-7下安装pygame"><a href="#env2-7下安装pygame" class="headerlink" title="env2.7下安装pygame"></a>env2.7下安装pygame</h2><p>访问<a href="https://www.pygame.org/wiki/GettingStarted" target="_blank" rel="external">pygame</a>的官方说明文档，其实它推荐的Mac安装方法也是使用<code>virtualenv</code>。找到<code>Mac installation</code>根据它的提示一步步来：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">python -m pip install venvdotapp</div><div class="line">venvdotapp</div><div class="line">python -m pip install pygame</div></pre></td></tr></table></figure></p>
+<p>安装成功后，测试一下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python -m pygame.examples.aliens</div></pre></td></tr></table></figure></p>
+<p>会出现一个打飞机的小游戏，这个时候你已经成功安装了pygame，最后运用一下智能出租车的项目：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python smartcab/agent.py</div></pre></td></tr></table></figure></p>
+<img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-065957@2x.jpg">
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/14/PHP-Session/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -916,170 +1085,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/26/PHP-Generator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Kevin's Note">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/26/PHP-Generator/" itemprop="url">PHP Generator 生成器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-26T16:54:11+08:00">
-                2017-06-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">学习笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/26/PHP-Generator/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/26/PHP-Generator/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/06/26/PHP-Generator/" class="leancloud_visitors" data-flag-title="PHP Generator 生成器">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>什么是生成器？官方的解释是：一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。简单的说就是在foreach循环的时候，最大限度的减少内存的开销。<br>Python中也有generator，作用是一样的，只不过PHP从5.5版本才引入。</p>
-<h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>项目中需要将大批量的特殊用户进行状态修改。最初是考虑MySQL直接批量修改的，但是无奈没有写出可用的SQL，所以想到用PHP来处理。（后续还是使用了SQL的方式处理用户，等下一篇讲高效的MySQL是如何处理的。）</p>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>简单的思路是，按条件将所有要修改的用户查出来，然后遍历一个个Update。（我知道这个是有点渣的写法=。=！）通过生成器去执行，减少内存的暂用。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 处理方法</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">dealWithOldData</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    $userInfo = $oldUser-&gt;selectOldUser();</div><div class="line">    <span class="comment">// 把处理过的数据id写如文件，用作记录</span></div><div class="line">    $fp = fopen(<span class="string">'app.log'</span>,<span class="string">'a'</span>);</div><div class="line">    <span class="keyword">foreach</span> (<span class="keyword">$this</span>-&gt;setStatus($userInfo) <span class="keyword">as</span> $value)</div><div class="line">    &#123;</div><div class="line">        fwrite($fp,$value.<span class="string">','</span>);</div><div class="line">    &#125;</div><div class="line">    fclose($fp);</div><div class="line">    <span class="keyword">exit</span>(<span class="string">'The End of Execute！'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 处理状态</div><div class="line"> * <span class="doctag">@param</span> array $arg</div><div class="line"> * <span class="doctag">@return</span> Generator</div><div class="line"> */</div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">setStatus</span><span class="params">(array $arg)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">foreach</span> ($arg <span class="keyword">as</span> $item) &#123;</div><div class="line">        <span class="keyword">yield</span> $data-&gt;updateData($item[<span class="string">'id'</span>],[<span class="string">'status'</span>=&gt;<span class="number">3</span>]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上万条数据很快处理完成，内存几乎没有多少飙升。</p>
-<p>下一篇介绍一下，正确的使用SQL语句的处理方法。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1122,7 +1134,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1133,7 +1145,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1144,7 +1156,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1205,8 +1217,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
