@@ -109,7 +109,7 @@
 <meta property="og:image" content="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-171952@2x.png">
 <meta property="og:image" content="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-182452@2x.png">
 <meta property="og:image" content="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-182241@2x.png">
-<meta property="og:updated_time" content="2017-08-17T10:52:13.000Z">
+<meta property="og:updated_time" content="2018-03-28T03:36:06.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP会话控制中的安全问题">
 <meta name="twitter:description" content="Session会话在聊Session之前，先得了解一下Cookie。Cookie是存储在用户客户端上用户识别身份的登陆令牌。最初有很多网站拿它做长期登陆状态，免去用户重复登陆。后来发现存在客户端的这个身份令牌很不安全，很可能被他人获取之后冒牌登陆。而Session是保存在服务器上的，功能和Cookie相似，服务器上的数据不太容易被别人获得，但也仅仅是相对安全。 用户登陆界面当访问用户登陆页面时，查">
@@ -385,7 +385,7 @@
 
       
         <h2 id="Session会话"><a href="#Session会话" class="headerlink" title="Session会话"></a>Session会话</h2><p>在聊<code>Session</code>之前，先得了解一下<code>Cookie</code>。<code>Cookie</code>是存储在用户客户端上用户识别身份的登陆令牌。最初有很多网站拿它做长期登陆状态，免去用户重复登陆。后来发现存在客户端的这个身份令牌很不安全，很可能被他人获取之后冒牌登陆。而<code>Session</code>是保存在服务器上的，功能和<code>Cookie</code>相似，服务器上的数据不太容易被别人获得，但也仅仅是相对安全。</p>
-<h4 id="用户登陆界面"><a href="#用户登陆界面" class="headerlink" title="用户登陆界面"></a>用户登陆界面</h4><p>当访问用户登陆页面时，查看浏览器控制台，会发现自动生成了一条<code>cookie</code>：<code>PHPSESSID=odpnhnmsf2s5vq4d5n1rqvb656</code>。它是哪里来的呢？原来是因为<code>session_start()</code>函数调用的时候，其实是通过<code>setCookie()</code>函数向cookie中设置了<br><code>PHPSESSID</code>这个key，对应的value是一个随机的、唯一的32位字符串！<br>通过在控制台中输入：<code>document.cookie</code>，可以返回<code>PHPSESSID</code>以及其所对应的值。<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-155731@2x.png"></p>
+<h4 id="用户登陆界面"><a href="#用户登陆界面" class="headerlink" title="用户登陆界面"></a>用户登陆界面</h4><p>当访问用户登陆页面时，查看浏览器控制台，会发现自动生成了一条<code>cookie</code>：<code>PHPSESSID=odpnhnmsf2s5vq4d5n1rqvb656</code>。它是哪里来的呢？原来是因为<code>session_start()</code>函数调用的时候，其实是通过<code>setCookie()</code>函数向cookie中设置了<br><code>PHPSESSID</code>这个key，对应的value是一个随机的、唯一的32位字符串！<a id="more"></a><br>通过在控制台中输入：<code>document.cookie</code>，可以返回<code>PHPSESSID</code>以及其所对应的值。<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-155731@2x.png"></p>
 <p>假设这个登陆令牌被他人得到了，他可以直接登陆吗？</p>
 <ul>
 <li>接下来做一个实验：</li>

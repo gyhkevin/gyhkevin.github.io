@@ -374,23 +374,16 @@
 
       
         
-          
-            <h2 id="Mac下使用conda安装pygame"><a href="#Mac下使用conda安装pygame" class="headerlink" title="Mac下使用conda安装pygame"></a>Mac下使用conda安装pygame</h2><p>起初按照项目介绍的安装方式，使用<a href="http://continuum.io/downloads" target="_blank" rel="external">Anaconda</a>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda install -c https://conda.anaconda.org/quasiben pygame</div></pre></td></tr></table></figure></p>
+          <h2 id="Mac下使用conda安装pygame"><a href="#Mac下使用conda安装pygame" class="headerlink" title="Mac下使用conda安装pygame"></a>Mac下使用conda安装pygame</h2><p>起初按照项目介绍的安装方式，使用<a href="http://continuum.io/downloads" target="_blank" rel="external">Anaconda</a>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda install -c https://conda.anaconda.org/quasiben pygame</div></pre></td></tr></table></figure></p>
 <p>看安装过程也没报错，一切看似挺顺利的。运行一下项目：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python smartcab/agent.py</div></pre></td></tr></table></figure></p>
-<p>看到的结果是这样的：<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-060838@2x.jpg"><br>只有文字输出，没有任何可视化！<br>我的Mac下同时安装了<code>Python2.7</code>(系统自带)和<code>Python3.6</code>，执行命令的时候，也不知道是安装到了2.7下还是3.6下，这个时候我想到了<a href="https://virtualenv.pypa.io/en/stable/userguide/" target="_blank" rel="external">virtualenv</a>。</p>
-<h2 id="先安装virtualenv"><a href="#先安装virtualenv" class="headerlink" title="先安装virtualenv"></a>先安装virtualenv</h2><p>为了确保使用的是<code>Python2.7</code>，执行如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip2.7 install virtualenv</div></pre></td></tr></table></figure></p>
-<img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-062919@2x.jpg">
-<p>有一个IOError，原因是权限不够，那就给这个包的目录一个权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod +a <span class="string">'user:YOUR-USER-NAME allow add_subdirectory,add_file,delete_child,directory_inherit'</span> /Library/Python/2.7/site-packages</div></pre></td></tr></table></figure></p>
-<img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-063314@2x.jpg">
-<p>这个时候安装成功了。接下来创建一个<code>virtualenv</code>的Python2.7环境：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">virtualenv -p /usr/bin/python2.7 env2.7</div></pre></td></tr></table></figure></p>
-<p>指定对应的Python版本，这个是系统自带的版本。成功后，当前目录会多出一个env2.7的文件夹，然后激活这个环境：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> env2.7/bin/activate</div></pre></td></tr></table></figure></p>
-<p>成功后，终端前面会多出一个<code>(env2.7)</code>。确认一下环境，执行<code>python</code>命令：<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-065338@2x.jpg"><br>顺便提一下，如果你想退出这个环境，最简单的方法是直接关掉当前的终端，当然还有个命令<code>deactivate</code>可以退出。</p>
-<h2 id="env2-7下安装pygame"><a href="#env2-7下安装pygame" class="headerlink" title="env2.7下安装pygame"></a>env2.7下安装pygame</h2><p>访问<a href="https://www.pygame.org/wiki/GettingStarted" target="_blank" rel="external">pygame</a>的官方说明文档，其实它推荐的Mac安装方法也是使用<code>virtualenv</code>。找到<code>Mac installation</code>根据它的提示一步步来：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">python -m pip install venvdotapp</div><div class="line">venvdotapp</div><div class="line">python -m pip install pygame</div></pre></td></tr></table></figure></p>
-<p>安装成功后，测试一下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python -m pygame.examples.aliens</div></pre></td></tr></table></figure></p>
-<p>会出现一个打飞机的小游戏，这个时候你已经成功安装了pygame，最后运用一下智能出租车的项目：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python smartcab/agent.py</div></pre></td></tr></table></figure></p>
-<img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-065957@2x.jpg">
-
-          
+<p>看到的结果是这样的：<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/Jietu20180315-060838@2x.jpg"><br>只有文字输出，没有任何可视化！
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/15/virtualenv-for-pygame-by-py2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -543,20 +536,15 @@
 
       
         
-          
-            <h2 id="Session会话"><a href="#Session会话" class="headerlink" title="Session会话"></a>Session会话</h2><p>在聊<code>Session</code>之前，先得了解一下<code>Cookie</code>。<code>Cookie</code>是存储在用户客户端上用户识别身份的登陆令牌。最初有很多网站拿它做长期登陆状态，免去用户重复登陆。后来发现存在客户端的这个身份令牌很不安全，很可能被他人获取之后冒牌登陆。而<code>Session</code>是保存在服务器上的，功能和<code>Cookie</code>相似，服务器上的数据不太容易被别人获得，但也仅仅是相对安全。</p>
-<h4 id="用户登陆界面"><a href="#用户登陆界面" class="headerlink" title="用户登陆界面"></a>用户登陆界面</h4><p>当访问用户登陆页面时，查看浏览器控制台，会发现自动生成了一条<code>cookie</code>：<code>PHPSESSID=odpnhnmsf2s5vq4d5n1rqvb656</code>。它是哪里来的呢？原来是因为<code>session_start()</code>函数调用的时候，其实是通过<code>setCookie()</code>函数向cookie中设置了<br><code>PHPSESSID</code>这个key，对应的value是一个随机的、唯一的32位字符串！<br>通过在控制台中输入：<code>document.cookie</code>，可以返回<code>PHPSESSID</code>以及其所对应的值。<br><img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-155731@2x.png"></p>
-<p>假设这个登陆令牌被他人得到了，他可以直接登陆吗？</p>
-<ul>
-<li>接下来做一个实验：</li>
-</ul>
-<p>在火狐浏览器中登陆成功 <img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-161305@2x.png"><br>还是那个字符串没变，把它复制一下，用另一个浏览器访问登陆页面，调出控制台输入<code>document.cookie</code>，看一下现在的cookie <img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-162007@2x.png"><br>和之前的不一样。但是，如果之前拿到的cookie赋值给当前页面会怎么样呢？<code>document.cookie=&#39;PHPSESSID=43f7139b4af1ba2d93db4db3e74bf000&#39;</code> <img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-163518@2x.jpg"><br>这个时候再刷新一下页面，你会发现已经登陆成功了！<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-165203@2x.png"></p>
-<h2 id="HttpOnly"><a href="#HttpOnly" class="headerlink" title="HttpOnly"></a>HttpOnly</h2><p>在实际场景中，通过<code>XSS</code>攻击，很容易被他人获取到。（下一篇，准备讲一下如何实现XSS攻击）<br>那么有什么措施可以防范的呢？先从开启<code>HttpOnly</code>开始。<code>HttpOnly</code>会话支持的浏览器，将仅用于发送HTTP（或HTTPS）请求时，从而限制了其他非HTTP的API（如JavaScript）访问。<br>开启的方法有两种：<br>第一种，是通过配置<code>php.ini</code>，添加一行<code>session.cookie_httponly=On</code>。同时你可能已经发现<code>session.name = PHPSESSID</code>，原来就是在<code>php.ini</code>中配置的。个人推荐这种，配置一次，一劳永逸。<br>如果你没有配置服务器的权限，那么第二种方法就是在<code>session_start()</code>开启之前，添加一行代码：<code>session_set_cookie_params(0, &quot;/&quot;, &quot;&quot;, false, true);</code>。<br>设置完成后，可以看到，多了一个<code>HttpOnly</code>字样。<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-174249@2x.png"><br>再尝试去获取cookie的时候，已经不行了。<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-171952@2x.png"><br>设置了<code>HttpOnly</code>是不是就很安全了呢？那可不一定！<code>HttpOnly</code>仅仅能够防止JavaScript不能访问，但是并不能防止对网络频道具有访问权限的攻击者直接访问该 Cookie。针对这种情况，应考虑使用安全套接字层 (SSL) 来提供帮助。</p>
-<h2 id="Secure"><a href="#Secure" class="headerlink" title="Secure"></a>Secure</h2><p>设置Secure开启，就是之前设置的函数中的<code>session_set_cookie_params(0, &quot;/&quot;, &quot;&quot;, true, true);</code>，倒数第二个参数设为<code>true</code>。创建的Session会话会以安全的形式向服务器传输，也就是只能在<code>HTTPS</code>连接中被浏览器传递到服务器端进行会话验证，如果是<code>HTTP</code>连接则不会传递该信息，所以不会被盗取到<code>Cookie</code>的具体内容。这个设置也可以在<code>php.ini</code>中配置：<code>session.cookie_secure=On</code>。如果全局配置的话，说明全站只能用<code>https</code>传递数据。<br>这时再去查看<code>PHPSESSID</code>时，会看到多了<code>安全</code>两个字。<img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-182452@2x.png"><br><img src="http://oai7lqgjb.bkt.clouddn.com/images/WX20170817-182241@2x.png"></p>
-<p>这样感觉已经很安全了，但是查看PHP官方网站，关于会话安全的问题，还有一个重要配置常常被忽视：<code>session.use_strict_mode=On</code>。它有什么作用呢？这里给个链接，有兴趣的可以去看一下。<br><a href="http://php.net/manual/zh/session.security.ini.php" target="_blank" rel="external">和会话安全相关的配置项</a></p>
-<p>下一篇文章准备写一下常见的XSS、反射型XSS和CSRF的攻击和防范。</p>
-
-          
+          <h2 id="Session会话"><a href="#Session会话" class="headerlink" title="Session会话"></a>Session会话</h2><p>在聊<code>Session</code>之前，先得了解一下<code>Cookie</code>。<code>Cookie</code>是存储在用户客户端上用户识别身份的登陆令牌。最初有很多网站拿它做长期登陆状态，免去用户重复登陆。后来发现存在客户端的这个身份令牌很不安全，很可能被他人获取之后冒牌登陆。而<code>Session</code>是保存在服务器上的，功能和<code>Cookie</code>相似，服务器上的数据不太容易被别人获得，但也仅仅是相对安全。</p>
+<h4 id="用户登陆界面"><a href="#用户登陆界面" class="headerlink" title="用户登陆界面"></a>用户登陆界面</h4><p>当访问用户登陆页面时，查看浏览器控制台，会发现自动生成了一条<code>cookie</code>：<code>PHPSESSID=odpnhnmsf2s5vq4d5n1rqvb656</code>。它是哪里来的呢？原来是因为<code>session_start()</code>函数调用的时候，其实是通过<code>setCookie()</code>函数向cookie中设置了<br><code>PHPSESSID</code>这个key，对应的value是一个随机的、唯一的32位字符串！
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/14/PHP-Session/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -709,8 +697,7 @@
 
       
         
-          
-            <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>上次好不容易搞清楚，前端使用base64编码格式上传图片，但随之而来又有了新问题，那就是</p>
+          <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>上次好不容易搞清楚，前端使用base64编码格式上传图片，但随之而来又有了新问题，那就是</p>
 <blockquote>
 <p>图片大小怎么控制？</p>
 </blockquote>
@@ -719,16 +706,14 @@
 <li>直接丢给后端处理？貌似也可以</li>
 <li>前端压缩完后直接给后端处理？那最好不过了</li>
 </ul>
-<p>跑去问前端，<code>JavaScript</code>可以直接压缩后上传吗？前端答曰：不行。碰一鼻子灰，那就只能丢给后端PHP去做裁剪了。<br>假设用户拍了一张5M左右的图，然后直接上传，信号不好的时候，速度还是很慢的，不过这不是重点，重点是TM流量贵啊～要是失败一次，再重来，那分分钟10几M流量就没了，用户那得哭，这个可不行，这事还是得前端做。<br>网上Google一下，立马一大堆解决方案，内心瞬间…你懂的～</p>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>Google搜索了一下结果，先讲思路，申明一个<code>new Image()</code>和<code>canvas</code>对象，然后通过<code>canvas</code>裁剪大小，把结果赋给<code>Image</code>对象。理解思路没错，但是不如直接使用成熟的库。介绍一下在Github上的一个好用的类库：<a href="https://github.com/think2011/localResizeIMG" target="_blank" rel="external">localResizeIMG</a>  。Star数有1500+，已经很好了，文档也详细，虽然不再更新了，但只要好用就好了。<br>代码实现如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//图片显示</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">imgPreview</span>(<span class="params">fileDom</span>) </span>&#123;</div><div class="line">    <span class="comment">//判断是否支持FileReader</span></div><div class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.FileReader) &#123;</div><div class="line">        <span class="keyword">var</span> reader = <span class="keyword">new</span> FileReader();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        layer.alert(<span class="string">"您的设备不支持图片预览功能，如需该功能请升级您的设备！"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//获取文件</span></div><div class="line">    <span class="keyword">var</span> file = fileDom.files[<span class="number">0</span>];</div><div class="line">    <span class="keyword">var</span> imageType = <span class="regexp">/^image\//</span>;</div><div class="line">    <span class="comment">//是否是图片</span></div><div class="line">    <span class="keyword">if</span> (!imageType.test(file.type)) &#123;</div><div class="line">        layer.alert(<span class="string">"请选择图片！"</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/* 压缩图片 */</span></div><div class="line">    lrz(file, &#123;</div><div class="line">        <span class="attr">width</span>: <span class="number">1200</span> <span class="comment">//设置压缩参数</span></div><div class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params">rst</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> img = <span class="keyword">new</span> Image(),</div><div class="line">            sourceSize = toFixed2(file.size / <span class="number">1024</span>),</div><div class="line">            resultSize = toFixed2(rst.fileLen / <span class="number">1024</span>),</div><div class="line">            scale = <span class="built_in">parseInt</span>(<span class="number">100</span> - (resultSize / sourceSize * <span class="number">100</span>));</div><div class="line"></div><div class="line">        <span class="comment">//读取完成</span></div><div class="line">        reader.onload = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">            <span class="comment">//获取图片dom</span></div><div class="line">            <span class="keyword">var</span> img = <span class="built_in">document</span>.getElementById(<span class="string">"imgPreview"</span>);</div><div class="line">            img.src = rst.base64;</div><div class="line">            $(<span class="string">'#base64'</span>).val(rst.base64);</div><div class="line">        &#125;;</div><div class="line">        reader.readAsDataURL(file);</div><div class="line">    &#125;); </div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">toFixed2</span> (<span class="params">num</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">parseFloat</span>(+num.toFixed(<span class="number">2</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<img src="http://oai7lqgjb.bkt.clouddn.com/images/update20170712.png">
-<blockquote>
-<ul>
-<li>原图大小4.2M，裁剪之后只有150k左右</li>
-</ul>
-</blockquote>
-
-          
+<p>跑去问前端，<code>JavaScript</code>可以直接压缩后上传吗？前端答曰：不行。碰一鼻子灰，那就只能丢给后端PHP去做裁剪了。<br>假设用户拍了一张5M左右的图，然后直接上传，信号不好的时候，速度还是很慢的，不过这不是重点，重点是TM流量贵啊～要是失败一次，再重来，那分分钟10几M流量就没了，用户那得哭，这个可不行，这事还是得前端做。<br>网上Google一下，立马一大堆解决方案，内心瞬间…你懂的～
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/12/update-picture-auto-compress/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -881,13 +866,14 @@
 
       
         
-          
-            <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>项目需要有个图片上传的功能，根据需求直接使用前端小哥写好的页面。<img src="/2017/07/07/base64-upload/uploadImg.jpg" alt="上传图片部分" title="上传图片部分"><br>前端直接可以判断上传文件的大小，并且很友好的显示出选择的图片。PHP后台一般直接从<code>$_FILE</code>这个魔术变量里面获取上传文件信息，不过我在获取前端约定好的字段时，并没有读取到该字段的信息，这是为什么呢？</p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>先不看前端是怎么写的，直接选择一个图片，打开chrome检查元素，看关键部分：<img src="/2017/07/07/base64-upload/shootcutBase64.jpg" alt="在src链接的是data:image/jpeg;base64,/..." title="在src链接的是data:image/jpeg;base64,/..."></p>
-<p>猜前端小哥直接把原来的file转编成了base64的字符串。为什么是字符串？Google的结果得知，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WindowBase64/Base64_encoding_and_decoding" target="_blank" rel="external">Base64是一组相似的二进制到文本(binary-to-text)的编码规则</a>。</p>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>知道传过来的是字符串，那就可以直接通过对应字段获取，最后把它转存起来，变成图片。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getUpdateFile</span><span class="params">($fileKey, $isBase64)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="comment">// 允许上传的文件</span></div><div class="line">    $allowFile = [<span class="string">'image/jpeg'</span>, <span class="string">'image/jpg'</span>, <span class="string">'image/png'</span>];</div><div class="line">    <span class="keyword">if</span> ($isBase64) &#123;</div><div class="line">        $fileType = substr(strstr(strstr($fileKey, <span class="string">';'</span>, <span class="keyword">true</span>), <span class="string">':'</span>), <span class="number">1</span>);</div><div class="line">        $fileBody = substr(strstr($fileKey, <span class="string">','</span>), <span class="number">1</span>);</div><div class="line">        $data = base64_decode($fileBody);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 被上传的文件名</span></div><div class="line">        $fileType = $_FILES[$fileKey][<span class="string">'type'</span>];</div><div class="line">        $fileSize = $_FILES[$fileKey][<span class="string">'size'</span>];</div><div class="line">        $fileTmpName = $_FILES[$fileKey][<span class="string">'tmp_name'</span>];</div><div class="line">        $fileError = $_FILES[$fileKey][<span class="string">'error'</span>];</div><div class="line">        <span class="comment">// 2M以上</span></div><div class="line">        <span class="keyword">if</span> ($fileSize &gt; <span class="number">2097152</span> <span class="keyword">and</span> $fileSize &lt; <span class="number">102400</span>) &#123;</div><div class="line">            <span class="keyword">self</span>::returnAjax(<span class="keyword">self</span>::STATUS_ERROR, <span class="string">'请将上传文件控制在2M以及100kb之间！'</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 上传失败</span></div><div class="line">        <span class="keyword">if</span> ($fileError &gt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">self</span>::returnAjax(<span class="keyword">self</span>::STATUS_ERROR, <span class="string">'网络请求失败！'</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 文件格式不允许</span></div><div class="line">    <span class="keyword">if</span> (!in_array($fileType, $allowFile)) &#123;</div><div class="line">        <span class="keyword">self</span>::returnAjax(<span class="keyword">self</span>::STATUS_ERROR, <span class="string">'上传文件格式不正确！'</span>);</div><div class="line">    &#125;</div><div class="line">    $basePath = APPLICATION_PATH . <span class="string">'/../public/upload/'</span>;</div><div class="line">    $tmp = explode(<span class="string">'/'</span>, $fileType);</div><div class="line">    <span class="keyword">if</span> ($tmp[<span class="number">1</span>] === <span class="string">'jpeg'</span>) &#123;</div><div class="line">        $pType = <span class="string">'jpg'</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        $pType = $tmp[<span class="number">1</span>];</div><div class="line">    &#125;</div><div class="line">    $fileName = date(<span class="string">'Ymdhis'</span>) . <span class="string">'.'</span> . $pType;</div><div class="line">    $dirData = date(<span class="string">'Ymd'</span>);</div><div class="line">    <span class="keyword">if</span> (!file_exists($basePath . $dirData)) &#123;</div><div class="line">        mkdir($basePath . $dirData, <span class="number">0777</span>);</div><div class="line">    &#125;</div><div class="line">    $savePath = $basePath . $dirData . <span class="string">'/'</span> . $fileName;</div><div class="line">    <span class="keyword">if</span> ($isBase64) &#123;</div><div class="line">        file_put_contents($savePath, $data);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        move_uploaded_file($fileTmpName, $savePath);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> $savePath;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
+          <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>项目需要有个图片上传的功能，根据需求直接使用前端小哥写好的页面。<img src="/2017/07/07/base64-upload/uploadImg.jpg" alt="上传图片部分" title="上传图片部分"><br>前端直接可以判断上传文件的大小，并且很友好的显示出选择的图片。PHP后台一般直接从<code>$_FILE</code>这个魔术变量里面获取上传文件信息，不过我在获取前端约定好的字段时，并没有读取到该字段的信息，这是为什么呢？
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/07/base64-upload/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1040,19 +1026,14 @@
 
       
         
-          
-            <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。</p>
-<h3 id="写法一"><a href="#写法一" class="headerlink" title="写法一"></a>写法一</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">UPDATE</span> (<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> products <span class="keyword">AS</span> p <span class="keyword">JOIN</span> <span class="keyword">users</span> <span class="keyword">AS</span> u <span class="keyword">ON</span> u.id=p.uid <span class="keyword">WHERE</span> u.status=<span class="number">1</span>) <span class="keyword">AS</span> a </div><div class="line"><span class="keyword">SET</span> a.is_apply=<span class="number">2</span>,a.send=<span class="number">3</span> </div><div class="line"><span class="keyword">WHERE</span> a.state=<span class="number">0</span> <span class="keyword">AND</span> a.rec=<span class="number">1</span>;</div></pre></td></tr></table></figure>
-<p>思路是把满足条件的数据全部查出来，再设置一个别名去修改。但返回的结果是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">The target table a of the UPDATE is not updatable</div></pre></td></tr></table></figure></p>
-<p>没有table a，所以无法更新。</p>
-<h3 id="写法二"><a href="#写法二" class="headerlink" title="写法二"></a>写法二</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">UPDATE</span> products </div><div class="line"><span class="keyword">SET</span> is_apply=<span class="number">2</span>,send=<span class="number">3</span> </div><div class="line"><span class="keyword">WHERE</span> state=<span class="number">0</span> <span class="keyword">AND</span> rec=<span class="number">1</span> <span class="keyword">AND</span> pid <span class="keyword">IN</span> </div><div class="line">(<span class="keyword">SELECT</span> pid <span class="keyword">FROM</span> products <span class="keyword">AS</span> p <span class="keyword">JOIN</span> <span class="keyword">users</span> <span class="keyword">AS</span> u <span class="keyword">ON</span> u.id=p.uid <span class="keyword">WHERE</span> u.status=<span class="number">1</span>);</div></pre></td></tr></table></figure>
-<p>查出了满足条件的pid，设置再where条件中，但是返回的结果是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">You can&apos;t specify target table &apos;products&apos; for update in FROM clause</div></pre></td></tr></table></figure></p>
-<p>中文翻译：您不能在FROM子句中指定更新的目标表“产品”。大概意思products表就要更新了，所以不要再查它了╮(╯▽╰)╭<br>不让我查products表，但我一定要查呀，那怎么办？</p>
-<h3 id="写法三"><a href="#写法三" class="headerlink" title="写法三"></a>写法三</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">UPDATE</span> products </div><div class="line"><span class="keyword">SET</span> is_apply=<span class="number">2</span>,send=<span class="number">3</span> </div><div class="line"><span class="keyword">WHERE</span> state=<span class="number">0</span> <span class="keyword">AND</span> rec=<span class="number">1</span> <span class="keyword">AND</span> pid <span class="keyword">IN</span> </div><div class="line">(<span class="keyword">SELECT</span> pid <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> tmp.* <span class="keyword">FROM</span> products tmp) <span class="keyword">AS</span> p</div><div class="line">  <span class="keyword">JOIN</span> <span class="keyword">users</span> <span class="keyword">AS</span> u <span class="keyword">on</span> u.id=p.uid <span class="keyword">WHERE</span> u.status=<span class="number">1</span>);</div></pre></td></tr></table></figure>
-<p>把products存在一个临时表里，这样名字不冲突了，应该不会报错了吧。返回结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">11478 rows affected in 2s 239ms</div></pre></td></tr></table></figure></p>
-<p>成功！<br>虽然处理时间稍微长了一点，但肯定比循环遍历来的更有效率。(^o^)/~</p>
-
-          
+          <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/27/mysql-update-table-by-another/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

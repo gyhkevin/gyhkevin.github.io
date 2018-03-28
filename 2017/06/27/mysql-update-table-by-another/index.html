@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="场景描述紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。 写法一123UPDATE (SELECT * FROM products AS p JOIN users AS">
+<meta name="description" content="场景描述紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。">
 <meta name="keywords" content="MySql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySql中以其他表作为更新表条件">
 <meta property="og:url" content="http://yoursite.com/2017/06/27/mysql-update-table-by-another/index.html">
 <meta property="og:site_name" content="Kevin&#39;s Note">
-<meta property="og:description" content="场景描述紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。 写法一123UPDATE (SELECT * FROM products AS p JOIN users AS">
-<meta property="og:updated_time" content="2017-08-17T06:10:06.000Z">
+<meta property="og:description" content="场景描述紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。">
+<meta property="og:updated_time" content="2018-03-28T03:37:30.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql中以其他表作为更新表条件">
-<meta name="twitter:description" content="场景描述紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。 写法一123UPDATE (SELECT * FROM products AS p JOIN users AS">
+<meta name="twitter:description" content="场景描述紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。">
 
 
 
@@ -374,7 +374,7 @@
       
 
       
-        <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。</p>
+        <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>紧接着上一篇文章中提到的问题，项目中需要修改大批量的用户状态。如果碰到数据量超出的PHP所能存贮的数据量，那么之前使用PHP Generator的方法也是无济于事的，唯一可行的办法就是直接使用SQL去执行。开始的想法也是使用SQL语句，但是失败了，再来看看失败错误的原因在哪里。<a id="more"></a></p>
 <h3 id="写法一"><a href="#写法一" class="headerlink" title="写法一"></a>写法一</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">UPDATE</span> (<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> products <span class="keyword">AS</span> p <span class="keyword">JOIN</span> <span class="keyword">users</span> <span class="keyword">AS</span> u <span class="keyword">ON</span> u.id=p.uid <span class="keyword">WHERE</span> u.status=<span class="number">1</span>) <span class="keyword">AS</span> a </div><div class="line"><span class="keyword">SET</span> a.is_apply=<span class="number">2</span>,a.send=<span class="number">3</span> </div><div class="line"><span class="keyword">WHERE</span> a.state=<span class="number">0</span> <span class="keyword">AND</span> a.rec=<span class="number">1</span>;</div></pre></td></tr></table></figure>
 <p>思路是把满足条件的数据全部查出来，再设置一个别名去修改。但返回的结果是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">The target table a of the UPDATE is not updatable</div></pre></td></tr></table></figure></p>
 <p>没有table a，所以无法更新。</p>
